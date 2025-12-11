@@ -1,0 +1,6 @@
+__pycache__/
+instance/expenses.db
+*.pyc
+.env
+venv/
+.DS_Store

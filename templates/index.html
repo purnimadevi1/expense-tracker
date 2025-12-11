@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Expenses</h2>
+    <div>
+      <strong>Total:</strong> ₹{{ "%.2f"|format(total) }} &nbsp; | &nbsp;
+      <strong>This month:</strong> ₹{{ "%.2f"|format(month_total) }}
+    </div>
+  </div>
+
+  {% if expenses %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Amount</th>
+          <th>Category</th>
+          <th>Date</th>
+          <th>Notes</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in expenses %}
+          <tr>
+            <td>{{ e['title'] }}</td>
+            <td>₹{{ "%.2f"|format(e['amount']) }}</td>
+            <td>{{ e['category'] or '-' }}</td>
+            <td>{{ e['date'] }}</td>
+            <td>{{ e['notes'] or '-' }}</td>
+            <td>
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('edit', expense_id=e['id']) }}">Edit</a>
+              <form method="post" action="{{ url_for('delete', expense_id=e['id']) }}" style="display:inline;">
+                <button class="btn btn-sm btn-outline-danger" onclick="return confirm('Delete this expense?');">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No expenses yet. <a href="{{ url_for('add') }}">Add your first expense</a>.</p>
+  {% endif %}
+{% endblock %}
